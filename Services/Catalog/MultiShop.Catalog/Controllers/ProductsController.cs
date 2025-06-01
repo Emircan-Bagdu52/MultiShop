@@ -6,7 +6,7 @@ using MultiShop.Catalog.Services.ProductServices;
 
 namespace MultiShop.Catalog.Controllers
 {
-	[AllowAnonymous]
+	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ProductsController : ControllerBase
@@ -21,7 +21,7 @@ namespace MultiShop.Catalog.Controllers
 		[HttpGet]
 		public async Task<IActionResult>ProductList()
 		{
-			var values=await _productService.GetAllProductAsync();
+			var values=await _productService.GettAllProductAsync();
 			return Ok(values);
 		}
 
@@ -34,7 +34,7 @@ namespace MultiShop.Catalog.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateProduct(CreateProductDto createProductDto)
 		{
-			await _productService.CreatProductAsync(createProductDto);
+			await _productService.CreateProductAsync(createProductDto);
 			return Ok("Ürün başarıyla eklendi");
 		}
 
@@ -50,6 +50,19 @@ namespace MultiShop.Catalog.Controllers
 		{
 			await _productService.DeleteProductAsync(id);
 			return Ok("Kategori Başarıyla silindi.");
+		}
+
+		[HttpGet("GetProductsWithCategory")]
+		public async Task<IActionResult> GetProductsWithCategory()
+		{
+			var values = await _productService.GetProductsWithCategoryAsync();
+			return Ok(values);
+		}
+		[HttpGet("ProductListWithCategoryByCatetegoryId/{id}")]
+		public async Task<IActionResult> ProductListWithCategoryByCatetegoryId(string id)
+		{
+			var values = await _productService.GetProductsWithCategoryByCatetegoryIdAsync(id);
+			return Ok(values);
 		}
 
 	}
